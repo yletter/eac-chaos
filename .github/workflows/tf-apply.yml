@@ -3,7 +3,7 @@ name: Terraform EAC EKS demo
 on:
   push:
     branches:
-      - mainxxx  # Change this to your main branch name if different
+      - main  # Change this to your main branch name if different
   repository_dispatch:
     types: [trigger-k8s-apply]
     
