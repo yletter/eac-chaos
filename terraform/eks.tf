@@ -26,7 +26,7 @@ module "eks" {
     ami_type       = "AL2_x86_64"
     instance_types = ["m5.large"]
 
-    attach_cluster_primary_security_group = true
+    attach_cluster_primary_security_group = false
   }
 
   eks_managed_node_groups = {
@@ -37,12 +37,7 @@ module "eks" {
 
       instance_types = ["t2.small"]
       capacity_type  = "SPOT"
-
-      tags = {
-        ExtraTag = "chaos-eks_managed_node_groups"
-      }
     }
   }
 
-  tags = local.tags
 }
