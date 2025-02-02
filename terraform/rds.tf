@@ -28,7 +28,7 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
 resource "aws_rds_cluster" "aurora_cluster" {
   cluster_identifier      = "aurora-mysql-cluster"
   engine                 = "aurora-mysql"
-  engine_version         = "8.0.mysql_aurora.3.02.0"  # Check AWS for latest versions
+  engine_version         = "8.0.mysql_aurora.3.08.0"  # Check AWS for latest versions
   database_name          = "mydatabase"
   master_username        = "adminuser"
   master_password        = "Sunday!20250202"  # Store in Secrets Manager in production
