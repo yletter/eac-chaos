@@ -21,7 +21,7 @@ resource "aws_security_group" "aurora_sg" {
 # Create a Subnet Group
 resource "aws_db_subnet_group" "aurora_subnet_group" {
   name       = "aurora-subnet-group"
-  subnet_ids = [module.vpc.aws_subnet.private[0].id, module.vpc.aws_subnet.private[1].id]  # Replace with your subnet IDs
+  subnet_ids = module.vpc.private_subnets  # Replace with your subnet IDs
 }
 
 # Create an Aurora MySQL Cluster (Single Writer Instance)
