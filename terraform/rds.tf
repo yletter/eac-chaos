@@ -2,6 +2,8 @@
 resource "aws_security_group" "aurora_sg" {
   name        = "aurora-mysql-sg"
   description = "Allow MySQL inbound traffic"
+
+  vpc_id      = module.vpc.id
   
   ingress {
     from_port   = 3306
