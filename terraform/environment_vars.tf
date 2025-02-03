@@ -6,5 +6,5 @@ variable "mysql_username" {
 variable "mysql_password" {
   description = "DB Admin password"
   type        = string
-  sensitive   = true
+  #sensitive   = true
 }
