@@ -43,9 +43,15 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
+      env:
+        TF_VAR_MYSQL_USERNAME: ${{ secrets.TF_VAR_MYSQL_USERNAME }}
+        TF_VAR_MYSQL_PASSWORD: ${{ secrets.TF_VAR_MYSQL_PASSWORD }}
       run: terraform plan -out=tfplan
 
     - name: Terraform Apply
+      env:
+        TF_VAR_MYSQL_USERNAME: ${{ secrets.TF_VAR_MYSQL_USERNAME }}
+        TF_VAR_MYSQL_PASSWORD: ${{ secrets.TF_VAR_MYSQL_PASSWORD }}
       run: terraform apply --auto-approve
 
     - name: Archive Terraform Plan

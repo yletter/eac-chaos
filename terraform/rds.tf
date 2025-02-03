@@ -35,8 +35,8 @@ resource "aws_db_instance" "chaos_db" {
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   publicly_accessible    = true
-  username               = "adminuser"
-  password               = "Sunday!20250202"
+  username               = var.mysql_username
+  password               = var.mysql_password
   skip_final_snapshot    = true
   storage_type           = "gp2"
   vpc_security_group_ids = [aws_security_group.chaos_sg.id]  # Ensure this is in the same VPC
