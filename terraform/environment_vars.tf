@@ -6,5 +6,13 @@ variable "mysql_username" {
 variable "mysql_password" {
   description = "DB Admin password"
   type        = string
-  #sensitive   = true
+  sensitive   = true
+}
+
+output "show_mysql_username" {
+  value = var.mysql_username
+}
+
+output "show_mysql_password" {
+  value = var.mysql_password
 }
