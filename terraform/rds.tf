@@ -1,6 +1,6 @@
 # Create a Security Group for Aurora
 resource "aws_security_group" "chaos_sg" {
-  name        = "aurora-mysql-sg"
+  name        = "chaos_sg"
   description = "Allow MySQL inbound traffic"
 
   vpc_id      = module.vpc.vpc_id
