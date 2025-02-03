@@ -32,7 +32,7 @@ resource "aws_db_instance" "chaos_db" {
   engine_version         = "8.0.33"
   db_name                = "chaosdatabase"
   identifier             = "chaosdatabase"
-  instance_class         = "db.t2.micro"
+  instance_class         = "db.t3.micro"
   allocated_storage      = 20
   publicly_accessible    = true
   username               = "adminuser"
