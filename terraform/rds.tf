@@ -40,6 +40,7 @@ resource "aws_db_instance" "chaos_db" {
   skip_final_snapshot    = true
   storage_type           = "gp2"
   vpc_security_group_ids = [aws_security_group.chaos_sg.id]  # Ensure this is in the same VPC
+  db_subnet_group_name   = aws_db_subnet_group.chaos_subnet_group.name
 }
 
 output "aurora_endpoint" {
