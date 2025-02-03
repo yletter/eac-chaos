@@ -29,7 +29,7 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
 # Create an Aurora MySQL Cluster (Single Writer Instance)
 resource "aws_db_instance" "chaos_db" {
   engine                 = "mysql"
-  engine_version         = "8.0"
+  engine_version         = "8.0.33"
   db_name                = "chaosdatabase"
   identifier             = "chaosdatabase"
   instance_class         = "db.t2.micro"
