@@ -27,27 +27,19 @@ resource "aws_db_subnet_group" "aurora_subnet_group" {
 }
 
 # Create an Aurora MySQL Cluster (Single Writer Instance)
-resource "aws_rds_cluster" "aurora_cluster" {
-  cluster_identifier      = "aurora-mysql-cluster"
-  engine                 = "aurora-mysql"
-  engine_version         = "5.7.mysql_aurora.2.12.4"  # Check AWS for latest versions
-  database_name          = "mydatabase"
-  master_username        = "adminuser"
-  master_password        = "Sunday!20250202"  # Store in Secrets Manager in production
-  backup_retention_period = 7
-  preferred_backup_window = "07:00-09:00"
-  vpc_security_group_ids  = [aws_security_group.aurora_sg.id]
-  db_subnet_group_name    = aws_db_subnet_group.aurora_subnet_group.name
-  skip_final_snapshot     = true
-}
-
-# Create a DB Instance within the Cluster
-resource "aws_rds_cluster_instance" "aurora_instance" {
-  cluster_identifier = aws_rds_cluster.aurora_cluster.id
-  instance_class     = "db.t3.micro"  # Cheapest option, not covered by Free Tier
-  engine             = aws_rds_cluster.aurora_cluster.engine
+resource "aws_db_instance" "chaos_db" {
+  engine                 = "mysql"
+  db_name                = "chaos_database"
+  identifier             = "chaos_database"
+  instance_class         = "db.t2.micro"
+  allocated_storage      = 20
+  publicly_accessible    = true
+  username               = "adminuser"
+  password               = "Sunday!20250202"
+  vpc_security_group_ids = [aws_security_group.aurora_sg.id]
+  skip_final_snapshot    = true
 }
 
 output "aurora_endpoint" {
-  value = aws_rds_cluster.aurora_cluster.endpoint
+  value = aws_db_instance.chaos_db.endpoint
 }
