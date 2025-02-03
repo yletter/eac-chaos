@@ -12,7 +12,3 @@ variable "mysql_password" {
 output "show_mysql_username" {
   value = var.mysql_username
 }
-
-output "show_mysql_password" {
-  value = var.mysql_password
-}
