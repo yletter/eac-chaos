@@ -1,4 +1,4 @@
-name: Terraform EAC EKS demo
+name: Terraform EAC Chaos Creation
 
 on:
   push:

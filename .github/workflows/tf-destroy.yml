@@ -1,4 +1,4 @@
-name: Terraform EAC EKS Destroy
+name: Terraform EAC Chaos Destroy
 on:
   workflow_dispatch:
   repository_dispatch:
