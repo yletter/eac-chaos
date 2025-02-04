@@ -34,7 +34,7 @@ resource "aws_db_instance" "chaos_db" {
   identifier             = "chaosdatabase"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
-  publicly_accessible    = true
+  publicly_accessible    = false
   username               = var.mysql_username
   password               = var.mysql_password
   skip_final_snapshot    = true
