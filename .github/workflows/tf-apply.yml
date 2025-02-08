@@ -68,24 +68,17 @@ jobs:
 
     - name: Update config file
       run: |
-        echo "DB_HOSTNAME = " $DB_HOSTNAME
-        pwd
-        ls -R
-        ls -R ..
         cd ../config-store
         sed -i "s/^mysql\.hostname=.*/mysql.hostname=$DB_HOSTNAME/" application.properties
 
     - name: Commit and push changes
       run: |
-        pwd
-        ls -R
-        ls -R ..
-        xxxx cd config-store
+        cd ../config-store
         git config user.name "yuvarajengineer"
         git config user.email "yuvarajengineer@gmail.com"
         git add application.properties
         git commit -m "Updated MySQL hostname to ${{ env.DB_HOSTNAME }}"
-        #git push origin main
+        git push origin main
 
     - name: Archive Terraform Plan
       if: always()
