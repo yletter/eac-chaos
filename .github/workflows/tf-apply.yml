@@ -55,7 +55,9 @@ jobs:
       run: terraform apply --auto-approve
 
     - name: Get Terraform output
-      run: echo "DB_HOSTNAME=$(terraform output -raw aurora_endpoint)" >> $GITHUB_ENV
+      run: |
+      echo "DB_HOSTNAME=$(terraform output -raw aurora_endpoint)"
+      echo "DB_HOSTNAME=$(terraform output -raw aurora_endpoint)" >> $GITHUB_ENV
 
     - name: Checkout config repo
       uses: actions/checkout@v4
@@ -63,7 +65,9 @@ jobs:
         repository: yletter/config-store
         token: ${{ secrets.YGITHUB_TOKEN }}
     - name: Update config file
-      run: sed -i "s/^mysql\.hostname=.*/mysql.hostname=$DB_HOSTNAME/" application.properties
+      run: |
+      echo "DB_HOSTNAME = " $DB_HOSTNAME
+      sed -i "s/^mysql\.hostname=.*/mysql.hostname=$DB_HOSTNAME/" application.properties
 
     - name: Commit and push changes
       run: |
