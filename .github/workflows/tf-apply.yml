@@ -70,7 +70,7 @@ jobs:
       run: |
         cd ../config-store
         sed -i "s/^mysql\.hostname=.*/mysql.hostname=$DB_HOSTNAME/" application.properties
-        sed -i "s/^mysql\.port=.*/mysql.hostname=$DB_PORT/" application.properties
+        sed -i "s/^mysql\.port=.*/mysql.port=$DB_PORT/" application.properties
 
     - name: Commit and push changes
       run: |
