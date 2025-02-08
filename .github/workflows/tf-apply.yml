@@ -64,9 +64,12 @@ jobs:
       with:
         repository: yletter/config-store
         token: ${{ secrets.YGITHUB_TOKEN }}
+        path: config-store
+
     - name: Update config file
       run: |
         echo "DB_HOSTNAME = " $DB_HOSTNAME
+        cd config-store
         pwd
         ls -l
         sed -i "s/^mysql\.hostname=.*/mysql.hostname=$DB_HOSTNAME/" application.properties
