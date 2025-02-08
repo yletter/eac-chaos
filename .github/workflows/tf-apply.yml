@@ -69,13 +69,16 @@ jobs:
     - name: Update config file
       run: |
         echo "DB_HOSTNAME = " $DB_HOSTNAME
+        ls -R
         cd config-store
         pwd
-        ls -l
         sed -i "s/^mysql\.hostname=.*/mysql.hostname=$DB_HOSTNAME/" application.properties
 
     - name: Commit and push changes
       run: |
+        pwd
+        ls -R
+        cd config-store
         git config user.name "yuvarajengineer"
         git config user.email "yuvarajengineer@gmail.com"
         git add application.properties
