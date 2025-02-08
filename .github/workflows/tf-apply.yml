@@ -92,3 +92,31 @@ jobs:
       with:
         name: tfplan
         path: terraform/tfplan
+
+    - name: Deploy Applications
+      run: |
+        # Install Kubectl
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+        kubectl version --client
+    
+        # Install Helm
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+        helm version
+
+        cd ..
+        mkdir deploy
+        cd deploy
+        aws eks update-kubeconfig --region us-east-1 --name chaos-cluster
+        
+        git clone https://github.com/yletter/chaos-helm
+
+        cd chaos-helm
+        cd charts
+        helm upgrade --install gateway gateway
+        helm upgrade --install user-service user-service
+        kubectl get svc
+        kubectl get deployments
+        helm status gateway 
+        helm list
