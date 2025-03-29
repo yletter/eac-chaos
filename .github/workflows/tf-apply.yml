@@ -120,7 +120,7 @@ jobs:
         cd charts
         kubectl create namespace dd
         kubectl create secret generic datadog-secret --from-literal api-key=$DD_API_KEY -n dd
-        helm install datadog-agent datadog-agent -f datadog-apm-values.yaml datadog/datadog -n dd
+        helm install datadog -f datadog-agent/datadog-apm-values.yaml datadog/datadog -n dd
         sleep 30
         kubectl get pods -A
         kubectl create namespace app
