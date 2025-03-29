@@ -121,7 +121,7 @@ jobs:
         kubectl create namespace dd
         kubectl create secret generic datadog-secret --from-literal api-key=$DD_API_KEY -n dd
         helm install datadog -f datadog-agent/datadog-apm-values.yaml datadog/datadog -n dd
-        sleep 30
+        sleep 120
         kubectl get pods -A
         kubectl create namespace app
         helm upgrade --install gateway gateway -n app
@@ -130,6 +130,6 @@ jobs:
         kubectl get deployments -n app
         kubectl get svc -n dd
         kubectl get deployments -n dd
-        sleep 10
+        sleep 60
         kubectl get pods -A
         
