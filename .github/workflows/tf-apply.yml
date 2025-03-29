@@ -3,7 +3,7 @@ name: Terraform EAC Chaos Creation
 on:
   push:
     branches:
-      - main  # Change this to your main branch name if different
+      - mainx  # Change this to your main branch name if different
   repository_dispatch:
     types: [trigger-k8s-apply]
     
