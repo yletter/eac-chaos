@@ -54,9 +54,8 @@ jobs:
 
         cd chaos-helm
         cd charts
-        helm uninstall gateway 
-        sleep 30
-        helm uninstall user-service
+        kubectl delete ns dd
+        kubectl delete ns app
         sleep 30
 
     - name: Terraform Init
