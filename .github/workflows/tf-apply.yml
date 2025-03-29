@@ -94,6 +94,8 @@ jobs:
         path: terraform/tfplan
 
     - name: Deploy Applications
+      env:
+        DD_API_KEY: ${{ secrets.DD_API_KEY }}
       run: |
         # Install Kubectl
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -104,6 +106,8 @@ jobs:
         # Install Helm
         curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
         helm version
+        helm repo add datadog https://helm.datadoghq.com
+        helm repo update
 
         cd ..
         mkdir deploy
@@ -114,9 +118,18 @@ jobs:
 
         cd chaos-helm
         cd charts
-        helm upgrade --install gateway gateway
-        helm upgrade --install user-service user-service
-        kubectl get svc
-        kubectl get deployments
-        helm status gateway 
-        helm list
+        kubectl create namespace dd
+        kubectl create secret generic datadog-secret --from-literal api-key=$DD_API_KEY -n dd
+        helm install datadog-agent -f datadog-apm-values.yaml datadog/datadog -n dd
+        sleep 30
+        kubectl get pods -A
+        kubectl create namespace app
+        helm upgrade --install gateway gateway -n app
+        helm upgrade --install user-service user-service -n app
+        kubectl get svc -n app
+        kubectl get deployments -n app
+        kubectl get svc -n dd
+        kubectl get deployments -n dd
+        sleep 10
+        kubectl get pods -A
+        
