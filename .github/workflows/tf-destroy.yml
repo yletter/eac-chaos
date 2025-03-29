@@ -40,20 +40,8 @@ jobs:
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin/
         kubectl version --client
-    
-        # Install Helm
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-        helm version
 
-        cd ..
-        mkdir deploy
-        cd deploy
         aws eks update-kubeconfig --region us-east-1 --name chaos-cluster
-        
-        git clone https://github.com/yletter/chaos-helm
-
-        cd chaos-helm
-        cd charts
         kubectl delete ns dd
         kubectl delete ns app
         sleep 30
