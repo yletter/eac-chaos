@@ -93,6 +93,26 @@ jobs:
         name: tfplan
         path: terraform/tfplan
 
+    - name: Install MySQL client
+      run: sudo apt-get update && sudo apt-get install -y mysql-client
+
+    - name: Create DB, Table and Insert a Row
+      env:
+        DB_USER: ${{ secrets.TF_VAR_MYSQL_USERNAME }}
+        DB_PASS: ${{ secrets.TF_VAR_MYSQL_PASSWORD }}
+      run: |
+        mysql -h $DB_HOSTNAME -P $DB_PORT -u $DB_USER -p$DB_PASS -e "
+        CREATE DATABASE IF NOT EXISTS userdb;
+        USE userdb;
+        CREATE TABLE IF NOT EXISTS users (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          username VARCHAR(100),
+          name VARCHAR(100),
+          email VARCHAR(100)
+        );
+        INSERT INTO users (name, email) VALUES ('eacyuvaraj', 'Yuvaraj', 'yuvaraj@example.com');
+        "
+
     - name: Deploy Applications
       env:
         DD_API_KEY: ${{ secrets.DD_API_KEY }}
