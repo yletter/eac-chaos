@@ -2,7 +2,7 @@ name: Terraform EAC Chaos Destroy
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [trigger-k8s-destroy]
+    types: [trigger-eac-destroy]
     
 jobs:
   terraform:
@@ -26,25 +26,6 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-
-    - name: AWS 
-      shell: bash
-      run: |
-        env
-        aws s3 ls
-
-    - name: Deploy Applications
-      run: |
-        # Install Kubectl
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin/
-        kubectl version --client
-
-        aws eks update-kubeconfig --region us-east-1 --name chaos-cluster
-        kubectl delete ns dd
-        kubectl delete ns app
-        sleep 30
 
     - name: Terraform Init
       run: terraform init

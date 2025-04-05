@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - mainx  # Change this to your main branch name if different
+  workflow_dispatch:
   repository_dispatch:
-    types: [trigger-k8s-apply]
+    types: [trigger-eac-apply]
     
 jobs:
   terraform:
@@ -92,64 +93,3 @@ jobs:
       with:
         name: tfplan
         path: terraform/tfplan
-
-    - name: Install MySQL client
-      run: sudo apt-get update && sudo apt-get install -y mysql-client
-
-    - name: Create DB, Table and Insert a Row
-      env:
-        DB_USER: ${{ secrets.TF_VAR_MYSQL_USERNAME }}
-        DB_PASS: ${{ secrets.TF_VAR_MYSQL_PASSWORD }}
-      run: |
-        mysql -h $DB_HOSTNAME -P $DB_PORT -u $DB_USER -p$DB_PASS -e "
-        CREATE DATABASE IF NOT EXISTS userdb;
-        USE userdb;
-        CREATE TABLE IF NOT EXISTS users (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          username VARCHAR(100),
-          name VARCHAR(100),
-          email VARCHAR(100)
-        );
-        INSERT INTO users (name, email) VALUES ('eacyuvaraj', 'Yuvaraj', 'yuvaraj@example.com');
-        "
-
-    - name: Deploy Applications
-      env:
-        DD_API_KEY: ${{ secrets.DD_API_KEY }}
-      run: |
-        # Install Kubectl
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin/
-        kubectl version --client
-    
-        # Install Helm
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-        helm version
-        helm repo add datadog https://helm.datadoghq.com
-        helm repo update
-
-        cd ..
-        mkdir deploy
-        cd deploy
-        aws eks update-kubeconfig --region us-east-1 --name chaos-cluster
-        
-        git clone https://github.com/yletter/chaos-helm
-
-        cd chaos-helm
-        cd charts
-        kubectl create namespace dd
-        kubectl create secret generic datadog-secret --from-literal api-key=$DD_API_KEY -n dd
-        helm upgrade datadog -f datadog-agent/datadog-apm-values.yaml datadog/datadog -n dd
-        sleep 120
-        kubectl get pods -A
-        kubectl create namespace app
-        helm upgrade --install gateway gateway -n app
-        helm upgrade --install user-service user-service -n app
-        kubectl get svc -n app
-        kubectl get deployments -n app
-        kubectl get svc -n dd
-        kubectl get deployments -n dd
-        sleep 60
-        kubectl get pods -A
-        
